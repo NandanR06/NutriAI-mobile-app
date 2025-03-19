@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_lists",
+  "info": {
+    "singularName": "user-list",
+    "pluralName": "user-lists",
+    "displayName": "userList",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email",
+      "required": true,
+      "unique": true
+    },
+    "picture": {
+      "type": "string"
+    },
+    "credits": {
+      "type": "integer",
+      "default": 3
+    },
+    "prefrence": {
+      "type": "string"
+    }
+  }
+}

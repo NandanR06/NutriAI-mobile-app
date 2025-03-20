@@ -2,7 +2,7 @@ import axios from "axios";
 
 const axiosclient = axios.create({
   //172.16.18.164
-  baseURL: "http://172.16.18.43/api",
+  baseURL: "http://192.168.43.238:1337/api",
   headers: {
     Authorization: `Bearer ${process.env.EXPO_PUBLIC_STRAPI_API_KEY}`,
   },
@@ -11,11 +11,16 @@ const axiosclient = axios.create({
 const getUserByEmail = async (email: string) => {
   try {
     const res = await axiosclient.get(
-      `/user-lists?filter[email][$eq]=${email}`
+      `/user-lists?filters[email][$eq]=${email}`
     );
+     
+    console.log("res in get user by email :", res.data);
+
     return res.data;
+    
   } catch (error) {
-    console.error("Error fetching user:", error);
+    if(error instanceof Error)
+    console.error("Error fetching user:", error.message);
     throw error;
   }
 };

@@ -17,6 +17,7 @@ import Promt from "@/services/Promt";
 import ImageGenerater from "@/services/ImageGenerater";
 import GlobalApi from "@/services/GlobalApi";
 import { UseContext } from "@/context/UseContext";
+import { useRouter } from "expo-router";
 
 interface Recipe {
   recipeName: string;
@@ -32,6 +33,7 @@ export default function CreateRecipi() {
   const [recipeList, setRecipeList] = useState<any[]>([]);
   const [recipeImageInfo, setRecipeImageInfo] = useState<string>("");
   const { userData, setUserData } = useContext(UseContext);
+  const router = useRouter();
 
   // generating the recipe list
   const generateRecipe = async () => {
@@ -134,10 +136,16 @@ export default function CreateRecipi() {
 
       ImageGenerater.GenerateImage(imageInfo, setRecipeImageInfo);
       // console.log("image url : ", recipeImageInfo);
-
+      
       // saving the data in the data base
-      saveData(recipeFullInfo, recipeImageInfo);
-console.log("recipi data fill",recipeFullInfo)
+     const res1 = await saveData(recipeFullInfo, recipeImageInfo);
+     console.log("data saved in the database ::::: ", res1);
+     router.push({
+      pathname: "/details_of_card",
+      params: {recipeDetails:JSON.stringify(res1)},
+    });
+
+      // console.log("recipi data fill", recipeFullInfo);
       // Set the cleaned recipe list
     } catch (error) {
       console.error("Error in AI response handling:", error);
@@ -157,42 +165,48 @@ console.log("recipi data fill",recipeFullInfo)
       recipeName: jsondata[0].recipeName,
       serveTo: jsondata[0].serveTo,
       steps: jsondata[0].steps,
-      category :jsondata[0].category,
-      ingredients :jsondata[0].ingredients,
+      category: jsondata[0].category,
+      ingredients: jsondata[0].ingredients,
       image: imageURL,
       userEmail: userData?.email,
     };
+    // console.log("data to be saved in the database : ", data);
+    
 
     // console.log("context data :", userData);
 
-    if (
-      userData &&
-      typeof userData?.credits === "number" &&
-      userData.credits > 0
-    ) {
-      const userUpdateInfo = {
-        picture: userData.picture,
-        name: userData.name,
-        email: userData.email,
-        prefrence: userData.prefrence,
-        credits: userData.credits - 1,
-      };
+    // if (
+    //   userData &&
+    //   typeof userData?.credits === "number" &&
+    //   userData.credits > 0
+    // ) {
+    //   const userUpdateInfo = {
+    //     picture: userData.picture,
+    //     name: userData.name,
+    //     email: userData.email,
+    //     prefrence: userData.prefrence,
+    //     credits: userData.credits - 1,
+    //   };
       // const updatedCredits = Math.max(userData.credits - 1, 0); // Prevent negative values
 
       const res = await GlobalApi.postingRecipe(data);
-
+      // console.log( "saved data in the database : : ",res.data);
+      const fullData = res.data;
+      return fullData;
       // fetching the user id from the context
-      setUserData(userUpdateInfo);
+      // setUserData(userUpdateInfo);
 
       //  updating the credits of the user
-      const res2 = await GlobalApi.updateUserCredits(
-        userUpdateInfo,
-        userData?.documentId
-      );
-      console.log("user Credit updated :", res2);
-    } else {
-      console.log("user Credits are full");
-    }
+      // const res2 = await GlobalApi.updateUserCredits(
+      //   userUpdateInfo,
+      //   userData?.documentId
+      // );
+      // console.log("user Credit updated :", res2);
+
+      
+    // } else {
+    //   console.log("user Credits are full");
+    // }
 
     // console.log("context data :", userData);
     // console.log("userUpdateInfo :", userUpdateInfo);

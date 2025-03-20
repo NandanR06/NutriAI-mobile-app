@@ -7,11 +7,11 @@ export default function HomeHeader() {
   const [isEnable, setIsEnable] = useState<boolean>(false);
   let data: string;
 
-  if (user.picture == " ") {
-    data = user?.picture;
-  } else {
+  // if (user.profile == " ") {
+  //   data = user?.profile;
+  // } else {
     data = require("../assets/images/profile.png");
-  }
+  // }
 
   return (
     <View style = {{flexDirection :'row', alignItems :"center",justifyContent :"space-between"}}>

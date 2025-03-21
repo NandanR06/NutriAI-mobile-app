@@ -39,7 +39,7 @@ export default function RecipeByCatagory() {
         Browse {catagoryName} recipe
       </Text>
 
-      <View style={{paddingLeft:20}}>
+      <View >
         <RecipeCard item={recipe} />
         {/* <Text>RecipeByCatagory</Text> */}
       </View>

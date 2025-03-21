@@ -29,10 +29,10 @@ export default function Landing() {
         // console.log("--", userInfo);
 
         if (userInfo?.email) {
-          console.log("data of user : ", userInfo.email);
+          // console.log("data of user : ", userInfo.email);
 
           const result = await GlobalApi.getUserByEmail(userInfo.email);
-          console.log("data of user : ", userInfo.email);
+          // console.log("data of user : ", userInfo.email);
           // console.log("data of user : ", result.data);
           //  inserting a data
           if (!result) {
@@ -151,7 +151,7 @@ export default function Landing() {
           </Text>
           <TouchableOpacity
             //
-            onPress={async () => signIn("exp://192.168.43.238:8081")}
+            onPress={async () => signIn("exp://192.168.157.87:8081")}
           >
             <Text style={styles.button}>Get Started</Text>
           </TouchableOpacity>

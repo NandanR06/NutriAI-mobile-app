@@ -39,6 +39,23 @@ export default function Tablayout() {
           },
         }}
       />
+       <Tabs.Screen
+        name="Camera"
+        options={{
+          tabBarIcon: ({ focused, color, size }) => {
+            return (
+              <Image
+                source={require("../../assets/images/camera.jpg")}
+                style={{
+                  width: size,
+                  height: size,
+                  opacity: focused ? 1 : 0.4,
+                }}
+              />
+            );
+          },
+        }}
+      />
       <Tabs.Screen
         name="Foodmaker"
         options={{
@@ -74,6 +91,8 @@ export default function Tablayout() {
           },
         }}
       />
+
+       
       
     </Tabs>
   );

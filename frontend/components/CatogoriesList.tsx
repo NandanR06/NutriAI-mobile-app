@@ -5,16 +5,21 @@ import { useRouter } from "expo-router";
 
 export default function CatogoriesList() {
   const [catagories, setCatagories] = React.useState<any>([]);
+  const [loading, setLoading] = React.useState<boolean>(false);
   const router = useRouter();
+
 
   useEffect(() => {
     catogoriesData();
   }, []);
 
   const catogoriesData = async () => {
+    setLoading(true);
     const res = await GlobalApi.catogories();
     // console.log("catagories : ", res.data);
     setCatagories(res.data);
+    setLoading(false);
+
   };
   return (
     <View>
@@ -28,9 +33,11 @@ export default function CatogoriesList() {
       >
         Catogories
       </Text>
+      <View>
       <FlatList
-        numColumns={5}
-        style={{ flexWrap: "wrap", flexDirection: "row" }}
+         numColumns={5}
+        refreshing={loading}
+        onRefresh={catogoriesData}
         data={catagories}
         renderItem={({ item }: any) => (
           <TouchableOpacity onPress={()=>router.push({
@@ -38,20 +45,25 @@ export default function CatogoriesList() {
             params :{catagoriesNmae : item?.name}
           })}
             style={{
-              flex: 1,
-              margin: 10,
+            
+              backgroundColor: "white",
+              padding: 10,
               alignItems: "center",
+              justifyContent: "center",
+
             }}
           >
             <Image
               source={{ uri: item?.image?.url }}
-              style={{ width: 60, height: 60, objectFit: "contain" ,backgroundColor: "transparent" }}
+              style={{ width: 50, height: 50 ,backgroundColor: "transparent",objectFit :"contain" }}
             />
             <Text style={{ fontFamily: "outfit-regular" }}>{item?.name}</Text>
           </TouchableOpacity>
         )}
         keyExtractor={(item) => item.id.toString()}
       />
+      </View>
+      
     </View>
   );
 }

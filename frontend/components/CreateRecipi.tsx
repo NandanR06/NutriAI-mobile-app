@@ -228,7 +228,7 @@ export default function CreateRecipi() {
         style={style.textInput}
         multiline={true}
         numberOfLines={3}
-        placeholder="What you want to create"
+        placeholder="What you want to cook today?"
       />
       <Button
         lable={"Generate Recipe"}

@@ -2,7 +2,7 @@ import axios from "axios";
 
 const axiosclient = axios.create({
   //172.16.18.164
-  baseURL: "http://192.168.43.238:1337/api",
+  baseURL: "http://192.168.157.87:1337/api",
   headers: {
     Authorization: `Bearer ${process.env.EXPO_PUBLIC_STRAPI_API_KEY}`,
   },
@@ -80,6 +80,28 @@ const RecipeByCatagory = async (data :any) => {
   }
 };
 
+const exploreData = async () => {
+  try {
+        
+    const res = await axiosclient.get("/recipes?sort[1]=id:desc");
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching exploread data ::: :", error);
+    throw error;
+  }
+}
+
+const paginationData = async () => {
+  try {
+        
+    const res = await axiosclient.get("/recipes?sort[1]=id:desc&pagination[page]=1&pagination[pageSize]=10");
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching exploread data ::: :", error);
+    throw error;
+  }
+}
+
 export default {
   getUserByEmail,
   CreateNewUser,
@@ -87,4 +109,6 @@ export default {
   postingRecipe,
   updateUserCredits,
   RecipeByCatagory,
+  exploreData,
+  paginationData,
 };

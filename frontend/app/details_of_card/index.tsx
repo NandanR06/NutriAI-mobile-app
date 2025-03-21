@@ -11,7 +11,7 @@ export default function RecipeDetails() {
   const { recipeDetails } = useLocalSearchParams();
   const recipeData = recipeDetails ? JSON.parse(recipeDetails as string) : {};
 
-  console.log("details of the card:", recipeDetails);
+  // console.log("details of the card:", recipeDetails);
 
   const imageUrl = recipeData?.image
     ?.replace("/o/", "/o/")

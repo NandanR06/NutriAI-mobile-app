@@ -50,6 +50,7 @@ export default function CatogoriesList() {
               padding: 10,
               alignItems: "center",
               justifyContent: "center",
+              margin:10
 
             }}
           >

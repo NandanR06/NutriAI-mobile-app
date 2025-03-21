@@ -59,6 +59,7 @@ export default function Home() {
         {/* list of the recipes */}
       <FlatList
          horizontal={true}
+         showsHorizontalScrollIndicator = {false}
         data={mainData}
         renderItem={({ item }) => (
           <TouchableOpacity

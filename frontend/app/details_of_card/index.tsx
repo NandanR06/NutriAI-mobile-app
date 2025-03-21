@@ -1,18 +1,60 @@
-import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import React, { useContext, useState } from "react";
 import { useLocalSearchParams } from "expo-router";
 import Entypo from "@expo/vector-icons/Entypo";
 import Color from "@/services/Color";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import CreateRecipi from "@/components/CreateRecipi";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { UseContext } from "@/context/UseContext";
+import GlobalApi from "@/services/GlobalApi";
 
 export default function RecipeDetails() {
+  const { userData } = useContext(UseContext);
   const { recipeDetails } = useLocalSearchParams();
   const recipeData = recipeDetails ? JSON.parse(recipeDetails as string) : {};
+  const [saved, setSaved] = useState(true);
 
   // console.log("details of the card:", recipeDetails);
+  const savedUserRecipe = async () => {
+    if (saved) {
+      setSaved(false);
+      const recipeID = recipeData?.documentId;
+      // console.log("details of the casr for saved : : : :", recipeID);
+      const image = recipeData?.image
+        ?.replace("/o/", "/o/")
+        ?.replace(/\/ai-guru-lab-images\//, "/ai-guru-lab-images%2F");
+      const data = {
+        recipeName: recipeData?.recipeName,
+        calories: recipeData?.calories,
+        cookTime: recipeData?.cookTime,
+        description: recipeData?.description,
+        imagePrompt: recipeData?.imagePrompt,
+        ingredients: recipeData?.ingredients,
+        serveTo: recipeData?.serveTo,
+        steps: recipeData?.steps,
+        userEmail: recipeData?.userEmail,
+        image: image,
+        category: recipeData?.category,
+        savedUsers: userData?.email,
+      };
 
+      const res = await GlobalApi.putSaverRecipeByUser(data, recipeID);
+      Alert.alert("saved", "your recipe has been saved");
+      // console.log("details of the casr for saved  clint ---: : : :", res.data);
+    } else {
+      Alert.alert("saved", "your recipe already saved");
+    }
+  };
   const imageUrl = recipeData?.image
     ?.replace("/o/", "/o/")
     ?.replace(/\/ai-guru-lab-images\//, "/ai-guru-lab-images%2F");
@@ -33,13 +75,37 @@ export default function RecipeDetails() {
             }}
           />
           <View style={{ marginTop: 15 }}>
-            <Text style={{ fontFamily: "outfit-bold", fontSize: 20 }}>
-              {recipeData.recipeName}
-            </Text>
-            <Text style={{ fontFamily: "outfit-bold", fontSize: 17, marginTop: 3 }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text style={{ fontFamily: "outfit-regular", fontSize: 22 }}>
+                {recipeData.recipeName}
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  savedUserRecipe();
+                }}
+              >
+                <FontAwesome name="bookmark" size={24} color="black" />
+              </TouchableOpacity>
+            </View>
+
+            <Text
+              style={{ fontFamily: "outfit-bold", fontSize: 17, marginTop: 3 }}
+            >
               Description
             </Text>
-            <Text style={{ fontFamily: "outfit-regular", fontSize: 15, color: "gray" }}>
+            <Text
+              style={{
+                fontFamily: "outfit-regular",
+                fontSize: 15,
+                color: "gray",
+              }}
+            >
               {recipeData.description}
             </Text>
           </View>
@@ -196,4 +262,3 @@ const style = StyleSheet.create({
     textAlign: "center",
   },
 });
-

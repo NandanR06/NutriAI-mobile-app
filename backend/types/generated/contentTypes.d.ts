@@ -458,6 +458,7 @@ export interface ApiRecipeRecipe extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
     recipeName: Schema.Attribute.String;
+    savedUsers: Schema.Attribute.JSON;
     serveTo: Schema.Attribute.Integer;
     steps: Schema.Attribute.JSON;
     updatedAt: Schema.Attribute.DateTime;

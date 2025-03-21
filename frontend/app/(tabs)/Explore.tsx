@@ -12,11 +12,15 @@ export default function Explore() {
   }, [])
 
   const exploreData = async () => {
+    
+
     setLoading(true);
    const res =  await GlobalApi.exploreData();
     // console.log("explore data",res.data);
     setMainData(res.data);
     setLoading(false);
+   
+
 
   }
 
@@ -25,6 +29,7 @@ export default function Explore() {
       <Text style={{fontFamily: "outfit-bold", fontSize: 22, marginTop: 10, marginBottom: 10, paddingLeft: 20}}>Explore the recipes</Text>
       
        <FlatList
+
             numColumns={2}
             refreshing={loading}
             onRefresh={exploreData}

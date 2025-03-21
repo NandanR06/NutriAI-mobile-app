@@ -43,6 +43,9 @@
     },
     "category": {
       "type": "json"
+    },
+    "savedUsers": {
+      "type": "json"
     }
   }
 }

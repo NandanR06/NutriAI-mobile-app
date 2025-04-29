@@ -40,12 +40,12 @@ export default function Tablayout() {
         }}
       />
        <Tabs.Screen
-        name="Camera"
+        name="VisionCameraScreen"
         options={{
           tabBarIcon: ({ focused, color, size }) => {
             return (
               <Image
-                source={require("../../assets/images/camera.jpg")}
+                source={require("../../assets/images/camera_icon.jpg")}
                 style={{
                   width: size,
                   height: size,

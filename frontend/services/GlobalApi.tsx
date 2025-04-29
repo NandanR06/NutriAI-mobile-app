@@ -2,7 +2,7 @@ import axios from "axios";
 
 const axiosclient = axios.create({
   //172.16.18.164
-  baseURL: "http://172.16.19.31:1337/api",
+  baseURL: "http://192.168.81.60:1337/api",
   headers: {
     Authorization: `Bearer ${process.env.EXPO_PUBLIC_STRAPI_API_KEY}`,
   },

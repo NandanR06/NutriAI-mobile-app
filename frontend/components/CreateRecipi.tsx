@@ -33,6 +33,8 @@ export default function CreateRecipi() {
   const [recipeList, setRecipeList] = useState<any[]>([]);
   const [recipeImageInfo, setRecipeImageInfo] = useState<string>("");
   const { userData, setUserData } = useContext(UseContext);
+  const [height, setheight] = useState<number>();
+  const [waight, setWaight] = useState<number>();
   const router = useRouter();
 
   // generating the recipe list
@@ -41,7 +43,7 @@ export default function CreateRecipi() {
 
     try {
       const res = await Aimodel.chatbot(
-        `${inputVal} ,${Promt.GENERATE_OPTION_PROMPT}`
+        `${inputVal} and height:${height} and weight:${waight} of BMI calculation and ${Promt.GENERATE_OPTION_PROMPT}`
       );
 
       if (!res || typeof res !== "string") {
@@ -91,7 +93,7 @@ export default function CreateRecipi() {
   const generateRecipeInfo = async (option: any) => {
     actionSheetRef.current?.hide();
     setopenLoading(true);
-    const promt = `Recipe name :${option.recipeName} and Discription: ${option.description} and ${Promt.GENERATE_COMPLETE_RECIPE} `;
+    const promt = `Recipe name :${option.recipeName} and Discription: ${option.description}and height:${height}and weight:${waight} of BMI calculation and ${Promt.GENERATE_COMPLETE_RECIPE} `;
 
     try {
       const res = await Aimodel.chatbot(promt);
@@ -136,14 +138,14 @@ export default function CreateRecipi() {
 
       ImageGenerater.GenerateImage(imageInfo, setRecipeImageInfo);
       // console.log("image url : ", recipeImageInfo);
-      
+
       // saving the data in the data base
-     const res1 = await saveData(recipeFullInfo, recipeImageInfo);
-     console.log("data saved in the database ::::: ", res1);
-     router.push({
-      pathname: "/details_of_card",
-      params: {recipeDetails:JSON.stringify(res1)},
-    });
+      const res1 = await saveData(recipeFullInfo, recipeImageInfo);
+      console.log("data saved in the database ::::: ", res1);
+      router.push({
+        pathname: "/details_of_card",
+        params: { recipeDetails: JSON.stringify(res1) },
+      });
 
       // console.log("recipi data fill", recipeFullInfo);
       // Set the cleaned recipe list
@@ -170,50 +172,11 @@ export default function CreateRecipi() {
       image: imageURL,
       userEmail: userData?.email,
     };
-    // console.log("data to be saved in the database : ", data);
-    
 
-    // console.log("context data :", userData);
-
-    // if (
-    //   userData &&
-    //   typeof userData?.credits === "number" &&
-    //   userData.credits > 0
-    // ) {
-    //   const userUpdateInfo = {
-    //     picture: userData.picture,
-    //     name: userData.name,
-    //     email: userData.email,
-    //     prefrence: userData.prefrence,
-    //     credits: userData.credits - 1,
-    //   };
-      // const updatedCredits = Math.max(userData.credits - 1, 0); // Prevent negative values
-
-      const res = await GlobalApi.postingRecipe(data);
-      // console.log( "saved data in the database : : ",res.data);
-      const fullData = res.data;
-      return fullData;
-      // fetching the user id from the context
-      // setUserData(userUpdateInfo);
-
-      //  updating the credits of the user
-      // const res2 = await GlobalApi.updateUserCredits(
-      //   userUpdateInfo,
-      //   userData?.documentId
-      // );
-      // console.log("user Credit updated :", res2);
-
-      
-    // } else {
-    //   console.log("user Credits are full");
-    // }
-
-    // console.log("context data :", userData);
-    // console.log("userUpdateInfo :", userUpdateInfo);
-    // console.log("userId :", userId);
-
-    //  console.log("saved data in database : ", res);
-    //  console.log('dummy data : ', data);
+    const res = await GlobalApi.postingRecipe(data);
+    // console.log( "saved data in the database : : ",res.data);
+    const fullData = res.data;
+    return fullData;
   };
 
   return (
@@ -230,6 +193,25 @@ export default function CreateRecipi() {
         numberOfLines={3}
         placeholder="What you want to cook today?"
       />
+
+      <View  style = {{display:"flex",gap:5,flexDirection:"row",width:"50%",justifyContent:"space-between",alignItems:"center",marginRight:160}}>
+        
+        <TextInput
+          placeholder="  height"
+          value={height?.toString() || ""}
+          onChangeText={(text) => setheight(Number(text) || undefined)}
+          keyboardType="numeric"
+          style={style.textInputData}
+        />
+        <TextInput
+          placeholder="  waight"
+          value={waight?.toString() || ""}
+          onChangeText={(text) => setWaight(Number(text) || undefined)}
+          keyboardType="numeric"
+          style={style.textInputData}
+        />
+      </View>
+
       <Button
         lable={"Generate Recipe"}
         icon={"sparkles"}
@@ -326,5 +308,13 @@ const style = StyleSheet.create({
     height: 120,
     padding: 15,
     fontSize: 16,
+  },
+  textInputData: {
+    backgroundColor: Color.WHITE,
+    textAlignVertical: "top",
+    fontSize: 16,
+    width: "100%",
+    borderRadius: 10,
+    textAlign: "center",
   },
 });

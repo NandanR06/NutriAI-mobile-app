@@ -151,7 +151,7 @@ export default function Landing() {
           </Text>
           <TouchableOpacity
             //
-            onPress={async () => signIn("exp://172.16.19.31:8081")}
+            onPress={async () => signIn("exp://192.168.81.60:8081")}
           >
             <Text style={styles.button}>Get Started</Text>
           </TouchableOpacity>

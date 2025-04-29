@@ -14,7 +14,7 @@ export default function HomeHeader() {
   // }
 
   return (
-    <View style = {{flexDirection :'row', alignItems :"center",justifyContent :"space-between"}}>
+    <View  style = {{flexDirection :'row', alignItems :"center",justifyContent :"space-between"}}>
       <View style={{ alignItems: "center", flexDirection: "row", gap: 8 }}>
         <Image
           source={require("../assets/images/profile.png")}

@@ -178,8 +178,8 @@ export default function RecipeDetails() {
         </View>
 
         {/* Final Section */}
-        <Text style={style.finalText}>Let's make your recipe</Text>
-        <CreateRecipi />
+        {/* <Text style={style.finalText}>Let's make your recipe</Text>
+        <CreateRecipi /> */}
       </View>
     </ScrollView>
   );

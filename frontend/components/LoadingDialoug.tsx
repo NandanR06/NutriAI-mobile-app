@@ -8,7 +8,6 @@ export default function LoadingDialoug({ visible, loading }: any) {
   return (
     <Modal transparent visible = {visible}  >
       <View style = {style.modelcontent}>
-        
         <ActivityIndicator style ={style.activity} color={Color.WHITE} size={30} />
         <Text>{loading}</Text>
       </View>
